@@ -1,0 +1,12 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#360E80",
+        "titleBar.activeBackground": "#4B14B4",
+        "titleBar.activeForeground": "#FDFDFF"
+    },
+    "python.formatting.autopep8Path": "/home/kjzarbock/.local/share/virtualenvs/kennels-server-OlmLfvqY/bin/autopep8",
+    "python.linting.pylintEnabled": true,
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportGeneralTypeIssues": "none"
+    }
+}

@@ -10,4 +10,7 @@ from .animal_requests import create_animal
 from .customer_requests import create_customer
 from .employee_requests import create_employee
 from .location_requests import create_location
-
+from .animal_requests import delete_animal
+from .customer_requests import delete_customer
+from .employee_requests import delete_employee
+from .location_requests import delete_location

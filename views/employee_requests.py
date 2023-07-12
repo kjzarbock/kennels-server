@@ -6,12 +6,10 @@ EMPLOYEES = [
     }
 ]
 
-
 def get_all_employees():
     return EMPLOYEES
 
 # Function with a single parameter
-
 
 def get_single_employee(id):
     # Variable to hold the found animal, if it exists

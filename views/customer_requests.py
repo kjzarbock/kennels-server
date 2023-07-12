@@ -6,12 +6,10 @@ CUSTOMERS = [
     }
 ]
 
-
 def get_all_customers():
     return CUSTOMERS
 
 # Function with a single parameter
-
 
 def get_single_customer(id):
     # Variable to hold the found animal, if it exists
@@ -26,7 +24,6 @@ def get_single_customer(id):
             requested_customer = customer
 
     return requested_customer
-
 
 def create_customer(customer):
     # Get the id value of the last animal in the list

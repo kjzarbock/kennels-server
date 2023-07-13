@@ -95,7 +95,6 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
 
         # Initialize new animal
-        new_animal = None
         new_customer = None
         new_employee = None
 
@@ -103,7 +102,14 @@ class HandleRequests(BaseHTTPRequestHandler):
         # the orange squiggle, you'll define the create_animal
         # function next.
         if resource == "animals":
-            new_animal = create_animal(post_body)
+            if "name" in post_body and "species" in post_body and "locationId" in post_body and "customerId" in post_body and "status" in post_body:
+                self._set_headers(201)
+                created_animal = create_animal(post_body)
+            else:
+                self._set_headers(400)
+                created_animal = {
+                    "message:": f'{"name is required" if "name" not in post_body else ""}{ "species is required" if "species" not in post_body else ""}{ "locationId is required" if "locationId" not in post_body else ""}{ "customerId is required" if "customerId" not in post_body else ""}{ "status is required" if "status" not in post_body else ""}'}
+
         if resource == "locations":
             if "name" in post_body and "address" in post_body:
                 self._set_headers(201)
@@ -118,7 +124,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             new_customer = create_customer(post_body)
 
         # Encode the new animal and send in response
-        self.wfile.write(json.dumps(new_animal).encode())
+        self.wfile.write(json.dumps(created_animal).encode())
         self.wfile.write(json.dumps(created_resource).encode())
         self.wfile.write(json.dumps(new_employee).encode())
         self.wfile.write(json.dumps(new_customer).encode())

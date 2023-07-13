@@ -7,11 +7,13 @@ CUSTOMERS = [
 ]
 
 def get_all_customers():
+    """function to get all customers"""
     return CUSTOMERS
 
 # Function with a single parameter
 
 def get_single_customer(id):
+    """function to get single customer"""
     # Variable to hold the found animal, if it exists
     requested_customer = None
 
@@ -26,6 +28,7 @@ def get_single_customer(id):
     return requested_customer
 
 def create_customer(customer):
+    """function to create customer"""
     # Get the id value of the last animal in the list
     max_id = CUSTOMERS[-1]["id"]
 
@@ -42,6 +45,7 @@ def create_customer(customer):
     return customer
 
 def delete_customer(id):
+    """function to delete customer"""
     # Initial -1 value for customer index, in case one isn't found
     customer_index = -1
 
@@ -57,6 +61,7 @@ def delete_customer(id):
         CUSTOMERS.pop(customer_index)
 
 def update_customer(id, new_customer):
+    """function to update customer"""
     # Iterate the CUSTOMERS list, but use enumerate() so that
     # you can access the index value of each item.
     for index, customer in enumerate(CUSTOMERS):

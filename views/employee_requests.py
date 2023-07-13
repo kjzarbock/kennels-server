@@ -7,11 +7,13 @@ EMPLOYEES = [
 ]
 
 def get_all_employees():
+    """function to get all employees"""
     return EMPLOYEES
 
 # Function with a single parameter
 
 def get_single_employee(id):
+    """function to get single employee"""
     # Variable to hold the found animal, if it exists
     requested_employee = None
 
@@ -26,6 +28,7 @@ def get_single_employee(id):
     return requested_employee
 
 def create_employee(employee):
+    """function to create employee"""
     # Get the id value of the last animal in the list
     max_id = EMPLOYEES[-1]["id"]
 
@@ -42,6 +45,7 @@ def create_employee(employee):
     return employee
 
 def delete_employee(id):
+    """function to delete employee"""
     # Initial -1 value for employee index, in case one isn't found
     employee_index = -1
 
@@ -57,6 +61,7 @@ def delete_employee(id):
         EMPLOYEES.pop(employee_index)
 
 def update_employee(id, new_employee):
+    """function to update employee"""
     # Iterate the EMPLOYEES list, but use enumerate() so that
     # you can access the index value of each item.
     for index, employee in enumerate(EMPLOYEES):

@@ -1,4 +1,5 @@
-
+from .location_requests import get_single_location
+from .customer_requests import get_single_customer
 
 ANIMALS = [
     {
@@ -37,7 +38,6 @@ def get_single_animal(id):
     """function to return a single animal"""
     # Variable to hold the found animal, if it exists
     requested_animal = None
-
     # Iterate the ANIMALS list above. Very similar to the
     # for..of loops you used in JavaScript.
     for animal in ANIMALS:
@@ -45,6 +45,13 @@ def get_single_animal(id):
         # instead of the dot notation that JavaScript used.
         if animal["id"] == id:
             requested_animal = animal
+            location = get_single_location(requested_animal["id"])
+            customer = get_single_customer(requested_animal["id"])
+
+            requested_animal["location"] = location
+            requested_animal["customer"] = customer
+            requested_animal.pop("locationId", None)
+            requested_animal.pop("customerId", None)
 
     return requested_animal
 

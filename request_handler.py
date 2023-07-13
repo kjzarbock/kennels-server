@@ -58,7 +58,7 @@ class HandleRequests(BaseHTTPRequestHandler):
             else:
                 response = f"{get_all_animals()}"
             self.wfile.write(response.encode())
-
+ 
         if resource == "locations":
             if id is not None:
                 response = f"{get_single_location(id)}"

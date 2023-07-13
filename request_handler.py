@@ -95,8 +95,10 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = self.parse_url(self.path)
 
         # Initialize new animal
-        new_customer = None
-        new_employee = None
+        created_animal = None
+        created_resource = None
+        created_employee = None
+        created_customer = None
 
         # Add a new animal to the list. Don't worry about
         # the orange squiggle, you'll define the create_animal
@@ -118,16 +120,30 @@ class HandleRequests(BaseHTTPRequestHandler):
                 self._set_headers(400)
                 created_resource = {
                 "message": f'{"name is required" if "name" not in post_body else ""} {"address is required" if "address" not in post_body else ""}'}
+
         if resource == "employees":
-            new_employee = create_employee(post_body)
+            if "name" in post_body and "locationId" in post_body:
+                self._set_headers(201)
+                created_employee = create_employee(post_body)
+            else:
+                self._set_headers(400)
+                created_employee = {
+                "message": f'{"name is required" if "name" not in post_body else ""} {"locationId is required" if "locationId" not in post_body else ""}'}
+
         if resource == "customers":
-            new_customer = create_customer(post_body)
+            if "fullName" in post_body and "email" in post_body:
+                self._set_headers(201)
+                created_customer = create_customer(post_body)
+            else:
+                self._set_headers(400)
+                created_customer = {
+                "message": f'{"fullName is required" if "fullName" not in post_body else ""} {"email is required" if "email" not in post_body else ""}'}
 
         # Encode the new animal and send in response
         self.wfile.write(json.dumps(created_animal).encode())
         self.wfile.write(json.dumps(created_resource).encode())
-        self.wfile.write(json.dumps(new_employee).encode())
-        self.wfile.write(json.dumps(new_customer).encode())
+        self.wfile.write(json.dumps(created_employee).encode())
+        self.wfile.write(json.dumps(created_customer).encode())
 
     def do_DELETE(self):
         """function to handle DELETE requests"""

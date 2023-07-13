@@ -8,5 +8,8 @@
     "python.linting.pylintEnabled": true,
     "python.analysis.diagnosticSeverityOverrides": {
         "reportGeneralTypeIssues": "none"
-    }
+    },
+    "cSpell.words": [
+        "Tanay"
+    ]
 }

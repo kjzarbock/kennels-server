@@ -16,6 +16,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     # Here's a class function
     def parse_url(self, path):
+        """function to parse the url and determine the resource requested and the id of the resource"""
         # Just like splitting a string in JavaScript. If the
         # path is "/animals/1", the resulting list will
         # have "" at index 0, "animals" at index 1, and "1"
@@ -39,6 +40,7 @@ class HandleRequests(BaseHTTPRequestHandler):
     # It handles any GET request.
 
     def do_GET(self):
+        """function to handle GET requests"""
         self._set_headers(200)
         response = {}  # Default response
 
@@ -76,6 +78,7 @@ class HandleRequests(BaseHTTPRequestHandler):
     # Here's a method on the class that overrides the parent's method.
     # It handles any POST request.
     def do_POST(self):
+        """function to handle POST requests"""
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
@@ -111,6 +114,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.wfile.write(json.dumps(new_customer).encode())
 
     def do_DELETE(self):
+        """function to handle DELETE requests"""
     # Set a 204 response code
         self._set_headers(204)
 
@@ -132,6 +136,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     # A method that handles any PUT request.
     def do_PUT(self):
+        """function to handle PUT requests"""
         self._set_headers(204)
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)

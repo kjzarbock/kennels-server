@@ -146,25 +146,34 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.wfile.write(json.dumps(created_customer).encode())
 
     def do_DELETE(self):
-        """function to handle DELETE requests"""
-    # Set a 204 response code
-        self._set_headers(204)
+        """Function to handle DELETE requests"""
+    # Set a 405 response code for Method Not Allowed
+        self._set_headers(405)
 
     # Parse the URL
         (resource, id) = self.parse_url(self.path)
 
-    # Delete a single animal from the list
-        if resource == "animals":
-            delete_animal(id)
-        if resource == "locations":
-            delete_location(id)
-        if resource == "employees":
-            delete_employee(id)
+    # Check if deleting customers is attempted
         if resource == "customers":
-            delete_customer(id)
+            response = {
+                "message": "Deleting customers is not allowed."
+            }
+            self.wfile.write(json.dumps(response).encode())
+        else:
+        # Proceed with deleting other resources
+            self._set_headers(204)
 
-    # Encode the new animal and send in response
-        self.wfile.write("".encode())
+        # Delete a single animal from the list
+            if resource == "animals":
+                delete_animal(id)
+            elif resource == "locations":
+                delete_location(id)
+            elif resource == "employees":
+                delete_employee(id)
+
+        # No need to encode a response when deleting other resources
+            self.wfile.write("".encode())
+
 
     # A method that handles any PUT request.
     def do_PUT(self):

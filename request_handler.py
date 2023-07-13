@@ -16,7 +16,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     # Here's a class function
     def parse_url(self, path):
-        """function to parse the url and determine the resource requested and the id of the resource"""
+        """function to parse the url and determine the resource requested and the id of the resource requested"""
         # Just like splitting a string in JavaScript. If the
         # path is "/animals/1", the resulting list will
         # have "" at index 0, "animals" at index 1, and "1"
@@ -49,7 +49,12 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "animals":
             if id is not None:
-                response = f"{get_single_animal(id)}"
+                animal = get_single_animal(id)
+                if animal is not None:
+                    response = f"{animal}"
+                else:
+                    self._set_headers(404)
+                    response = f"Animal {id} is out playing right now."
             else:
                 response = f"{get_all_animals()}"
             self.wfile.write(response.encode())

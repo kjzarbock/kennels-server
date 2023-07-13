@@ -41,7 +41,6 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """function to handle GET requests"""
-        self._set_headers(200)
         response = {}  # Default response
 
         # Parse the URL and capture the tuple that is returned
@@ -61,6 +60,7 @@ class HandleRequests(BaseHTTPRequestHandler):
  
         if resource == "locations":
             if id is not None:
+                self._set_headers(200)
                 response = f"{get_single_location(id)}"
             else:
                 response = f"{get_all_locations()}"
@@ -68,6 +68,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "employees":
             if id is not None:
+                self._set_headers(200)
                 response = f"{get_single_employee(id)}"
             else:
                 response = f"{get_all_employees()}"
@@ -75,6 +76,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "customers":
             if id is not None:
+                self._set_headers(200)
                 response = f"{get_single_customer(id)}"
             else:
                 response = f"{get_all_customers()}"
@@ -84,7 +86,6 @@ class HandleRequests(BaseHTTPRequestHandler):
     # It handles any POST request.
     def do_POST(self):
         """function to handle POST requests"""
-        self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
 
@@ -111,7 +112,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                 self._set_headers(400)
                 created_animal = {
                     "message:": f'{"name is required" if "name" not in post_body else ""}{ "species is required" if "species" not in post_body else ""}{ "locationId is required" if "locationId" not in post_body else ""}{ "customerId is required" if "customerId" not in post_body else ""}{ "status is required" if "status" not in post_body else ""}'}
-
+            self.wfile.write(json.dumps(created_animal).encode())
         if resource == "locations":
             if "name" in post_body and "address" in post_body:
                 self._set_headers(201)
@@ -120,7 +121,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                 self._set_headers(400)
                 created_resource = {
                 "message": f'{"name is required" if "name" not in post_body else ""} {"address is required" if "address" not in post_body else ""}'}
-
+            self.wfile.write(json.dumps(created_resource).encode())
         if resource == "employees":
             if "name" in post_body and "locationId" in post_body:
                 self._set_headers(201)
@@ -129,7 +130,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                 self._set_headers(400)
                 created_employee = {
                 "message": f'{"name is required" if "name" not in post_body else ""} {"locationId is required" if "locationId" not in post_body else ""}'}
-
+            self.wfile.write(json.dumps(created_employee).encode())
         if resource == "customers":
             if "fullName" in post_body and "email" in post_body:
                 self._set_headers(201)
@@ -138,23 +139,19 @@ class HandleRequests(BaseHTTPRequestHandler):
                 self._set_headers(400)
                 created_customer = {
                 "message": f'{"fullName is required" if "fullName" not in post_body else ""} {"email is required" if "email" not in post_body else ""}'}
+            self.wfile.write(json.dumps(created_customer).encode())
 
-        # Encode the new animal and send in response
-        self.wfile.write(json.dumps(created_animal).encode())
-        self.wfile.write(json.dumps(created_resource).encode())
-        self.wfile.write(json.dumps(created_employee).encode())
-        self.wfile.write(json.dumps(created_customer).encode())
+
 
     def do_DELETE(self):
         """Function to handle DELETE requests"""
-    # Set a 405 response code for Method Not Allowed
-        self._set_headers(405)
 
     # Parse the URL
         (resource, id) = self.parse_url(self.path)
 
     # Check if deleting customers is attempted
         if resource == "customers":
+            self._set_headers(405)
             response = {
                 "message": "Deleting customers is not allowed."
             }

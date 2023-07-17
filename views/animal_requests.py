@@ -156,10 +156,9 @@ def get_animals_by_status(status):
         dataset = db_cursor.fetchall()
 
         for row in dataset:
-            animal = Animal(row['id'], row['name'], row['status'], 
+            animal = Animal(row['id'], row['name'], row['status'],
                             row['breed'], row['customer_id'], row['location_id'])
             animals.append(animal.__dict__)
-
     return animals
 
 def create_animal(animal):

@@ -4,6 +4,7 @@ from .animal_requests import get_animals_by_location
 from .animal_requests import update_animal
 from .animal_requests import delete_animal
 from .animal_requests import create_animal
+from .animal_requests import get_animals_by_status
 from .customer_requests import get_all_customers
 from .customer_requests import get_single_customer
 from .customer_requests import create_customer

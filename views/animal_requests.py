@@ -7,24 +7,24 @@ ANIMALS = [
         "id": 1,
         "name": "Snickers",
         "species": "Dog",
-        "locationId": 1,
-        "customerId": 4,
+        "location_id": 1,
+        "customer_id": 4,
         "status": "Admitted"
     },
     {
         "id": 2,
         "name": "Roman",
         "species": "Dog",
-        "locationId": 1,
-        "customerId": 2,
+        "location_id": 1,
+        "customer_id": 2,
         "status": "Admitted"
     },
     {
         "id": 3,
         "name": "Blue",
         "species": "Cat",
-        "locationId": 2,
-        "customerId": 1,
+        "location_id": 2,
+        "customer_id": 1,
         "status": "Admitted"
     }
 ]

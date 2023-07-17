@@ -6,7 +6,7 @@ EMPLOYEES = [
     {
         "id": 1,
         "name": "Jenna Solis",
-        "locationId": 1
+        "location_id": 1
     }
 ]
 
@@ -24,7 +24,7 @@ def get_all_employees():
         SELECT
             a.id,
             a.name,
-            a.locationId
+            a.location_id
         FROM employee a
         """)
 
@@ -41,7 +41,7 @@ def get_all_employees():
             # Note that the database fields are specified in
             # exact order of the parameters defined in the
             # Employee class above.
-            employee = Employee(row['id'], row['name'], row['locationId'])
+            employee = Employee(row['id'], row['name'], row['location_id'])
 
             employees.append(employee.__dict__)
 
@@ -61,7 +61,7 @@ def get_single_employee(id):
         SELECT
             a.id,
             a.name,
-            a.locationId
+            a.location_id
         FROM employee a
         WHERE a.id = ?
         """, ( id, ))
@@ -70,7 +70,7 @@ def get_single_employee(id):
         data = db_cursor.fetchone()
 
         # Create an employee instance from the current row
-        employee = Employee(data['id'], data['name'], data['locationId'])
+        employee = Employee(data['id'], data['name'], data['location_id'])
 
         return employee.__dict__
 

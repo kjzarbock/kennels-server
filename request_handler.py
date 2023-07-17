@@ -51,24 +51,39 @@ class HandleRequests(BaseHTTPRequestHandler):
 
             if resource == "animals":
                 if id is not None:
-                    response = get_single_animal(id)
+                    animal = get_single_animal(id)
+                    if animal is not None:
+                        response = f"{animal}"
+                    else:
+                        self._set_headers(404)
+                        response = f"Animal {id} is out playing right now."
                 else:
-                    response = get_all_animals()
-            elif resource == "customers":
+                    response = f"{get_all_animals()}"
+                self.wfile.write(response.encode())
+
+            if resource == "locations":
                 if id is not None:
-                    response = get_single_customer(id)
+                    self._set_headers(200)
+                    response = f"{get_single_location(id)}"
                 else:
-                    response = get_all_customers()
-            elif resource == "employees":
+                    response = f"{get_all_locations()}"
+                self.wfile.write(response.encode())
+
+            if resource == "employees":
                 if id is not None:
-                    response = get_single_employee(id)
+                    self._set_headers(200)
+                    response = f"{get_single_employee(id)}"
                 else:
-                    response = get_all_employees()
-            elif resource == "locations":
+                    response = f"{get_all_employees()}"
+                self.wfile.write(response.encode())
+
+            if resource == "customers":
                 if id is not None:
-                    response = get_single_location(id)
+                    self._set_headers(200)
+                    response = f"{get_single_customer(id)}"
                 else:
-                    response = get_all_locations()
+                    response = f"{get_all_customers()}"
+                self.wfile.write(response.encode())
 
         else: # There is a ? in the path, run the query param functions
             (resource, query) = parsed

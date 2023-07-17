@@ -1,3 +1,7 @@
+import sqlite3
+import json
+from models import Customer
+
 CUSTOMERS = [
     {
         "id": 1,
@@ -8,37 +12,80 @@ CUSTOMERS = [
 
 def get_all_customers():
     """function to get all customers"""
-    return CUSTOMERS
+    # Open a connection to the database
+    with sqlite3.connect("./kennel.sqlite3") as conn:
+
+        # Just use these. It's a Black Box.
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        # Write the SQL query to get the information you want
+        db_cursor.execute("""
+        SELECT
+            a.id,
+            a.fullName,
+            a.email
+        FROM customer a
+        """)
+
+        # Initialize an empty list to hold all customer representations
+        customers = []
+
+        # Convert rows of data into a Python list
+        dataset = db_cursor.fetchall()
+
+        # Iterate list of data returned from database
+        for row in dataset:
+
+            # Create an customer instance from the current row.
+            # Note that the database fields are specified in
+            # exact order of the parameters defined in the
+            # Customer class above.
+            customer = Customer(row['id'], row['fullName'], row['email'])
+
+            customers.append(customer.__dict__)
+
+    return customers
 
 # Function with a single parameter
 
 def get_single_customer(id):
     """function to get single customer"""
-    # Variable to hold the found animal, if it exists
-    requested_customer = None
+    with sqlite3.connect("./kennel.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
 
-    # Iterate the ANIMALS list above. Very similar to the
-    # for..of loops you used in JavaScript.
-    for customer in CUSTOMERS:
-        # Dictionaries in Python use [] notation to find a key
-        # instead of the dot notation that JavaScript used.
-        if customer["id"] == id:
-            requested_customer = customer
+        # Use a ? parameter to inject a variable's value
+        # into the SQL statement.
+        db_cursor.execute("""
+        SELECT
+            a.id,
+            a.fullName,
+            a.email
+        FROM customer a
+        WHERE a.id = ?
+        """, ( id, ))
 
-    return requested_customer
+        # Load the single result into memory
+        data = db_cursor.fetchone()
+
+        # Create an customer instance from the current row
+        customer = Customer(data['id'], data['fullName'], data['email'])
+
+        return customer.__dict__
 
 def create_customer(customer):
     """function to create customer"""
-    # Get the id value of the last animal in the list
+    # Get the id value of the last customer in the list
     max_id = CUSTOMERS[-1]["id"]
 
     # Add 1 to whatever that number is
     new_id = max_id + 1
 
-    # Add an `id` property to the animal dictionary
+    # Add an `id` property to the customer dictionary
     customer["id"] = new_id
 
-    # Add the animal dictionary to the list
+    # Add the customer dictionary to the list
     CUSTOMERS.append(customer)
 
     # Return the dictionary with `id` property added
@@ -53,7 +100,7 @@ def delete_customer(id):
     # can access the index value of each item
     for index, customer in enumerate(CUSTOMERS):
         if customer["id"] == id:
-            # Found the animal. Store the current index.
+            # Found the customer. Store the current index.
             customer_index = index
 
     # If the customer was found, use pop(int) to remove it from list
@@ -66,6 +113,6 @@ def update_customer(id, new_customer):
     # you can access the index value of each item.
     for index, customer in enumerate(CUSTOMERS):
         if customer["id"] == id:
-            # Found the animal. Update the value.
+            # Found the customer. Update the value.
             CUSTOMERS[index] = new_customer
             break

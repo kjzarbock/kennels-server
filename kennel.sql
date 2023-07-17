@@ -70,3 +70,11 @@ SELECT
     a.customer_id
 FROM animal a
 WHERE a.id = 1;
+
+-- Get only the animal rows where the `id` field value is 3
+SELECT
+    a.id,
+    a.fullName,
+    a.email
+FROM customer a
+WHERE a.id = 1;

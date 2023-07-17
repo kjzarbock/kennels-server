@@ -1,3 +1,7 @@
+import sqlite3
+import json
+from models import Employee
+
 EMPLOYEES = [
     {
         "id": 1,
@@ -8,37 +12,80 @@ EMPLOYEES = [
 
 def get_all_employees():
     """function to get all employees"""
-    return EMPLOYEES
+    # Open a connection to the database
+    with sqlite3.connect("./kennel.sqlite3") as conn:
+
+        # Just use these. It's a Black Box.
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        # Write the SQL query to get the information you want
+        db_cursor.execute("""
+        SELECT
+            a.id,
+            a.name,
+            a.locationId
+        FROM employee a
+        """)
+
+        # Initialize an empty list to hold all employee representations
+        employees = []
+
+        # Convert rows of data into a Python list
+        dataset = db_cursor.fetchall()
+
+        # Iterate list of data returned from database
+        for row in dataset:
+
+            # Create an employee instance from the current row.
+            # Note that the database fields are specified in
+            # exact order of the parameters defined in the
+            # Employee class above.
+            employee = Employee(row['id'], row['name'], row['locationId'])
+
+            employees.append(employee.__dict__)
+
+    return employees
 
 # Function with a single parameter
 
 def get_single_employee(id):
     """function to get single employee"""
-    # Variable to hold the found animal, if it exists
-    requested_employee = None
+    with sqlite3.connect("./kennel.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
 
-    # Iterate the ANIMALS list above. Very similar to the
-    # for..of loops you used in JavaScript.
-    for employee in EMPLOYEES:
-        # Dictionaries in Python use [] notation to find a key
-        # instead of the dot notation that JavaScript used.
-        if employee["id"] == id:
-            requested_employee = employee
+        # Use a ? parameter to inject a variable's value
+        # into the SQL statement.
+        db_cursor.execute("""
+        SELECT
+            a.id,
+            a.name,
+            a.locationId
+        FROM employee a
+        WHERE a.id = ?
+        """, ( id, ))
 
-    return requested_employee
+        # Load the single result into memory
+        data = db_cursor.fetchone()
+
+        # Create an employee instance from the current row
+        employee = Employee(data['id'], data['name'], data['locationId'])
+
+        return employee.__dict__
 
 def create_employee(employee):
     """function to create employee"""
-    # Get the id value of the last animal in the list
+    # Get the id value of the last employee in the list
     max_id = EMPLOYEES[-1]["id"]
 
     # Add 1 to whatever that number is
     new_id = max_id + 1
 
-    # Add an `id` property to the animal dictionary
+    # Add an `id` property to the employee dictionary
     employee["id"] = new_id
 
-    # Add the animal dictionary to the list
+    # Add the employee dictionary to the list
     EMPLOYEES.append(employee)
 
     # Return the dictionary with `id` property added

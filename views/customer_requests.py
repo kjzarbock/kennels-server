@@ -5,7 +5,7 @@ from models import Customer
 CUSTOMERS = [
     {
         "id": 1,
-        "fullName": "Ryan Tanay",
+        "name": "Ryan Tanay",
         "email": "ryan@example.com"
     }
 ]
@@ -23,7 +23,7 @@ def get_all_customers():
         db_cursor.execute("""
         SELECT
             a.id,
-            a.fullName,
+            a.name,
             a.email
         FROM customer a
         """)
@@ -41,7 +41,7 @@ def get_all_customers():
             # Note that the database fields are specified in
             # exact order of the parameters defined in the
             # Customer class above.
-            customer = Customer(row['id'], row['fullName'], row['email'])
+            customer = Customer(row['id'], row['name'], row['email'])
 
             customers.append(customer.__dict__)
 
@@ -60,7 +60,7 @@ def get_single_customer(id):
         db_cursor.execute("""
         SELECT
             a.id,
-            a.fullName,
+            a.name,
             a.email
         FROM customer a
         WHERE a.id = ?
@@ -70,7 +70,7 @@ def get_single_customer(id):
         data = db_cursor.fetchone()
 
         # Create an customer instance from the current row
-        customer = Customer(data['id'], data['fullName'], data['email'])
+        customer = Customer(data['id'], data['name'], data['email'])
 
         return customer.__dict__
 

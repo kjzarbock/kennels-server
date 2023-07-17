@@ -6,4 +6,3 @@ class Location():
         self.id = id
         self.name = name
         self.address = address
-

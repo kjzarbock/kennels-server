@@ -6,6 +6,7 @@ CUSTOMERS = [
     {
         "id": 1,
         "name": "Ryan Tanay",
+        "address": "1234 Street",
         "email": "ryan@example.com"
     }
 ]
@@ -24,6 +25,7 @@ def get_all_customers():
         SELECT
             a.id,
             a.name,
+            a.address,
             a.email
         FROM customer a
         """)
@@ -41,7 +43,7 @@ def get_all_customers():
             # Note that the database fields are specified in
             # exact order of the parameters defined in the
             # Customer class above.
-            customer = Customer(row['id'], row['name'], row['email'])
+            customer = Customer(row['id'], row['name'], row['address'], row['email'])
 
             customers.append(customer.__dict__)
 
@@ -61,6 +63,7 @@ def get_single_customer(id):
         SELECT
             a.id,
             a.name,
+            a.address,
             a.email
         FROM customer a
         WHERE a.id = ?
@@ -70,7 +73,7 @@ def get_single_customer(id):
         data = db_cursor.fetchone()
 
         # Create an customer instance from the current row
-        customer = Customer(data['id'], data['name'], data['email'])
+        customer = Customer(data['id'], data['name'], data['address'], data['email'])
 
         return customer.__dict__
 

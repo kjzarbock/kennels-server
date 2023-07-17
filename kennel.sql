@@ -75,6 +75,6 @@ WHERE a.id = 1;
 SELECT
     a.id,
     a.name,
-    a.email
-FROM customer a
+    a.address
+FROM location a
 WHERE a.id = 2;

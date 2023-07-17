@@ -6,9 +6,11 @@ EMPLOYEES = [
     {
         "id": 1,
         "name": "Jenna Solis",
+        "address": "100 Infinity Way",
         "location_id": 1
     }
 ]
+
 
 def get_all_employees():
     """function to get all employees"""
@@ -24,6 +26,7 @@ def get_all_employees():
         SELECT
             a.id,
             a.name,
+            a.address,
             a.location_id
         FROM employee a
         """)
@@ -41,13 +44,15 @@ def get_all_employees():
             # Note that the database fields are specified in
             # exact order of the parameters defined in the
             # Employee class above.
-            employee = Employee(row['id'], row['name'], row['location_id'])
+            employee = Employee(row['id'], row['name'],
+                                row['address'], row['location_id'])
 
             employees.append(employee.__dict__)
 
     return employees
 
 # Function with a single parameter
+
 
 def get_single_employee(id):
     """function to get single employee"""
@@ -61,18 +66,21 @@ def get_single_employee(id):
         SELECT
             a.id,
             a.name,
+            a.address,
             a.location_id
         FROM employee a
         WHERE a.id = ?
-        """, ( id, ))
+        """, (id, ))
 
         # Load the single result into memory
         data = db_cursor.fetchone()
 
         # Create an employee instance from the current row
-        employee = Employee(data['id'], data['name'], data['location_id'])
+        employee = Employee(data['id'], data['name'],
+                            data['address'], data['location_id'])
 
         return employee.__dict__
+
 
 def create_employee(employee):
     """function to create employee"""
@@ -91,6 +99,7 @@ def create_employee(employee):
     # Return the dictionary with `id` property added
     return employee
 
+
 def delete_employee(id):
     """function to delete employee"""
     # Initial -1 value for employee index, in case one isn't found
@@ -106,6 +115,7 @@ def delete_employee(id):
     # If the employee was found, use pop(int) to remove it from list
     if employee_index >= 0:
         EMPLOYEES.pop(employee_index)
+
 
 def update_employee(id, new_employee):
     """function to update employee"""

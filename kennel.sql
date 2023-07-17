@@ -91,7 +91,6 @@ SELECT
 FROM customer a
 WHERE a.id = 1;
 
-
 -- Get only the employee rows where the `id` field value is 1
 SELECT 
     a.id,
@@ -108,3 +107,6 @@ SELECT
     a.address
 FROM location a
 WHERE a.id = 2;
+
+SELECT *
+FROM animal

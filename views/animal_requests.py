@@ -103,6 +103,35 @@ def get_single_animal(id):
 
         return animal.__dict__
 
+def get_animals_by_location(location_id):
+    """function to get animals by location"""
+    with sqlite3.connect("./kennel.sqlite3") as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        # Write the SQL query to get the information you want
+        db_cursor.execute("""
+        select
+            a.id,
+            a.name,
+            a.status,
+            a.breed,
+            a.customer_id,
+            a.location_id
+        from animal a
+        WHERE a.location_id = ?
+        """, ( location_id, ))
+
+        animals = []
+        dataset = db_cursor.fetchall()
+
+        for row in dataset:
+            animal = Animal(row['id'], row['name'], row['status'], row['breed'],
+                             row['customer_id'], row['location_id'])
+            animals.append(animal.__dict__)
+
+    return animals
+
 def create_animal(animal):
     """function to create animal"""
     # Get the id value of the last animal in the list

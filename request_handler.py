@@ -1,7 +1,12 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse, parse_qs
-from views import get_all_animals, get_single_animal, get_all_customers, get_single_customer, get_all_employees, get_single_employee, get_all_locations, get_single_location, create_animal, create_customer, create_employee, create_location, delete_animal, delete_customer, delete_employee, delete_location, update_animal, update_customer, update_employee, update_location, get_customers_by_email, get_animals_by_location, get_employees_by_location, get_animals_by_status
+from views import (get_all_animals, get_single_animal, get_all_customers,
+                get_single_customer, get_all_employees, get_single_employee, get_all_locations,
+                get_single_location, create_animal, create_customer, create_employee, create_location,
+                delete_animal, delete_customer, delete_employee, delete_location, update_animal,
+                update_customer, update_employee, update_location, get_customers_by_email,
+                get_animals_by_location, get_employees_by_location, get_animals_by_status)
 
 # Here's a class. It inherits from another class.
 # For now, think of a class as a container for functions that
@@ -53,42 +58,41 @@ class HandleRequests(BaseHTTPRequestHandler):
                 if id is not None:
                     animal = get_single_animal(id)
                     if animal is not None:
-                        response = f"{animal}"
+                        response = animal  # No need to format as string
                     else:
                         self._set_headers(404)
-                        response = f"Animal {id} is out playing right now."
+                        response = {"message": f"Animal {id} is out playing right now."}
                 else:
-                    response = f"{get_all_animals()}"
-                self.wfile.write(response.encode())
+                    response = get_all_animals()
+                self.wfile.write(json.dumps(response).encode())
 
             if resource == "locations":
                 if id is not None:
                     self._set_headers(200)
-                    response = f"{get_single_location(id)}"
+                    response = get_single_location(id)
                 else:
-                    response = f"{get_all_locations()}"
-                self.wfile.write(response.encode())
+                    response = get_all_locations()
+                self.wfile.write(json.dumps(response).encode())
 
             if resource == "employees":
                 if id is not None:
                     self._set_headers(200)
-                    response = f"{get_single_employee(id)}"
+                    response = get_single_employee(id)
                 else:
-                    response = f"{get_all_employees()}"
-                self.wfile.write(response.encode())
+                    response = get_all_employees()
+                self.wfile.write(json.dumps(response).encode())
 
             if resource == "customers":
                 if id is not None:
                     self._set_headers(200)
-                    response = f"{get_single_customer(id)}"
+                    response = get_single_customer(id)
                 else:
-                    response = f"{get_all_customers()}"
-                self.wfile.write(response.encode())
+                    response = get_all_customers()
+                self.wfile.write(json.dumps(response).encode())
 
-        else: # There is a ? in the path, run the query param functions
+        else:  # There is a ? in the path, run the query param functions
             (resource, query) = parsed
 
-            # see if the query dictionary has an email key
             if query.get('email') and resource == 'customers':
                 response = get_customers_by_email(query['email'][0])
             if query.get('location_id') and resource == 'animals':
@@ -202,9 +206,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                         'GET, POST, PUT, DELETE')
+                        'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                         'X-Requested-With, Content-Type, Accept')
+                        'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
 

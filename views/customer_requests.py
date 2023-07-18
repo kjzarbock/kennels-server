@@ -7,7 +7,8 @@ CUSTOMERS = [
         "id": 1,
         "name": "Ryan Tanay",
         "address": "1234 Street",
-        "email": "ryan@example.com"
+        "email": "ryan@example.com",
+        "password": "password"
     }
 ]
 
@@ -26,7 +27,8 @@ def get_all_customers():
             a.id,
             a.name,
             a.address,
-            a.email
+            a.email,
+            a.password
         FROM customer a
         """)
 
@@ -60,13 +62,13 @@ def get_customers_by_email(email):
         # Write the SQL query to get the information you want
         db_cursor.execute("""
         select
-            c.id,
-            c.name,
-            c.address,
-            c.email,
-            c.password
-        from customer c
-        WHERE c.email = ?
+            a.id,
+            a.name,
+            a.address,
+            a.email,
+            a.password
+        from customer a
+        WHERE a.email = ?
         """, ( email, ))
 
         customers = []
@@ -91,7 +93,8 @@ def get_single_customer(id):
             a.id,
             a.name,
             a.address,
-            a.email
+            a.email,
+            a.password
         FROM customer a
         WHERE a.id = ?
         """, ( id, ))

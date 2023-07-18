@@ -179,6 +179,7 @@ def create_animal(animal):
     return animal
 
 def delete_animal(id):
+    """function to delete animal"""
     with sqlite3.connect("./kennel.sqlite3") as conn:
         db_cursor = conn.cursor()
 
@@ -186,6 +187,7 @@ def delete_animal(id):
         DELETE FROM animal
         WHERE id = ?
         """, (id, ))
+
 
 def update_animal(id, new_animal):
     """function to update animal"""

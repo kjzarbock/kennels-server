@@ -164,6 +164,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     # A method that handles any PUT request.
     def do_PUT(self):
+        """function to update resource"""
         content_len = int(self.headers.get('content-length', 0))
         post_body = self.rfile.read(content_len)
         post_body = json.loads(post_body)
@@ -175,6 +176,12 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == "animals":
             success = update_animal(id, post_body)
+        elif resource == "employees":
+            success = update_employee(id, post_body)
+        elif resource == "customers":
+            success = update_customer(id, post_body)
+        elif resource == "locations":
+            success = update_location(id, post_body)
     # rest of the elif's
 
         if success:

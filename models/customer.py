@@ -6,4 +6,3 @@ class Customer():
         self.address = address
         self.email = email
         self.password = password
-
